@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0, persist-credentials: false }
+        with: { fetch-depth: 0 }
       - name: Validate commits and calculate version
         id: version
         env:
