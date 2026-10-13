@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: website
+  namespace: medio-under
+  labels: {app: website}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: website}
+  template:
+    metadata:
+      labels: {app: website}
+    spec:
+      containers:
+        - name: website
+          image: frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports: [{name: http, containerPort: 80}]
+          readinessProbe:
+            httpGet: {path: /, port: http}
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /, port: http}
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          resources:
+            requests: {cpu: 25m, memory: 32Mi}
+            limits: {cpu: 250m, memory: 128Mi}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: website
+  namespace: medio-under
+spec:
+  selector: {app: website}
+  ports: [{name: http, port: 80, targetPort: http}]

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: medio-under-config
+  namespace: medio-under
+data:
+  NODE_ENV: production
+  PORT: "8787"
+  DATA_DIR: /app/data
+  UPLOAD_DIR: /app/uploads
+  MEDIA_ROOT: /app/media
+  MONGODB_DB: medio_under
+  PUBLIC_BASE_URL: https://medio-under.example.com
+  PUBLIC_MEDIA_BASE_URL: https://medio-under.example.com
+  CLOUDFLARE_TUNNEL_URL: https://medio-under.example.com
+  META_API_VERSION: v24.0
+  SCHEDULER_INTERVAL_MS: "30000"
+  RATE_LIMIT: "120"
+  TRUST_PROXY: "true"
+  PRESS_AUTO_FOLLOWUP: "false"
+  MCP_ALLOW_LIVE_PUBLISH: "false"
+  MCP_ALLOW_LIVE_EMAIL: "false"

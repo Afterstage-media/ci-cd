@@ -1,0 +1,24 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: medio-under
+  namespace: flux-system
+spec:
+  interval: 5m
+  retryInterval: 1m
+  timeout: 3m
+  wait: true
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: medio-under
+  path: ./deploy/k3s/overlays/production
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: social-manager
+      namespace: medio-under
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: website
+      namespace: medio-under

@@ -1,0 +1,23 @@
+name: Conventional Commits
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0, persist-credentials: false }
+      - name: Validate commit messages
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          if [[ "${EVENT_NAME}" == "pull_request" ]]; then range="${BASE_SHA}..${HEAD_SHA}"; elif [[ -n "${BEFORE_SHA}" && "${BEFORE_SHA}" != "0000000000000000000000000000000000000000" ]]; then range="${BEFORE_SHA}..${HEAD_SHA}"; elif git rev-parse --verify --quiet HEAD~1 >/dev/null; then range="HEAD~1..HEAD"; else range="HEAD"; fi
+          ./scripts/validate-commits.sh "${range}"
