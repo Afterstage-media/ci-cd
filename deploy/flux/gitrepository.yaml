@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m
-  url: https://github.com/medio-under/medio-under.git
+  url: https://github.com/medio-under/ci-cd.git
   ref:
     branch: main
   timeout: 60s
