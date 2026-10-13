@@ -19,7 +19,7 @@ docker save backend:latest frontend:latest | sudo k3s ctr images import -
 kubectl apply -f deploy/k3s/secret.example.yaml
 # Editar el Secret antes de continuar: no commitear credenciales reales.
 kubectl apply -k deploy/k3s
-kubectl -n medio-under rollout status deployment/social-manager
+kubectl -n medio-under rollout status deployment/backend
 kubectl -n medio-under rollout status deployment/website
 ```
 
@@ -44,7 +44,7 @@ La URL temporal cambia al reiniciar. Para Meta y publicaciones reales usar un t√
 Construir/importar las im√°genes nuevas y ejecutar:
 
 ```bash
-kubectl -n medio-under rollout restart deployment/social-manager deployment/website
+kubectl -n medio-under rollout restart deployment/backend deployment/website
 kubectl -n medio-under get pods,svc,pvc
 ```
 

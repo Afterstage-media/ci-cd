@@ -5,5 +5,5 @@ resources:
   - namespace.yaml
   - configmap.yaml
   - pvc.yaml
-  - social-manager.yaml
+  - backend.yaml
   - website.yaml

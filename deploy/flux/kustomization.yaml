@@ -16,7 +16,7 @@ spec:
   healthChecks:
     - apiVersion: apps/v1
       kind: Deployment
-      name: social-manager
+      name: backend
       namespace: medio-under
     - apiVersion: apps/v1
       kind: Deployment

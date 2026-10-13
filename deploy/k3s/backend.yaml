@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: social-manager
+  name: backend
   namespace: medio-under
-  labels: {app: social-manager}
+  labels: {app: backend}
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
-    matchLabels: {app: social-manager}
+    matchLabels: {app: backend}
   template:
     metadata:
-      labels: {app: social-manager}
+      labels: {app: backend}
     spec:
       securityContext:
         runAsNonRoot: true
@@ -20,7 +20,7 @@ spec:
         capabilities: {drop: [ALL]}
         seccompProfile: {type: RuntimeDefault}
       containers:
-        - name: social-manager
+        - name: backend
           image: backend:latest
           imagePullPolicy: IfNotPresent
           ports: [{name: http, containerPort: 8787}]
@@ -49,8 +49,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: social-manager
+  name: backend
   namespace: medio-under
 spec:
-  selector: {app: social-manager}
+  selector: {app: backend}
   ports: [{name: http, port: 8787, targetPort: http}]
