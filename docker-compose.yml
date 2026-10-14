@@ -1,6 +1,21 @@
 services:
+  mongo:
+    image: mongo:7.0
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.adminCommand({ ping: 1 }).ok' | grep 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
   backend:
     image: ghcr.io/medio-under/backend:latest
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
     env_file:
       - path: ./backend.env
         required: false
@@ -9,8 +24,12 @@ services:
       DATA_DIR: /app/data
       UPLOAD_DIR: /app/uploads
       MEDIA_ROOT: /app/media
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017/medio_under}
       MONGODB_DB: ${MONGODB_DB:-medio_under}
       TRUST_PROXY: "true"
+    depends_on:
+      mongo:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8787/health').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
       interval: 10s
@@ -27,6 +46,9 @@ services:
 
   frontend:
     image: ghcr.io/medio-under/frontend:latest
+    build:
+      context: ..
+      dockerfile: ci-cd/infra/local-frontend.Dockerfile
     depends_on:
       backend:
         condition: service_healthy
@@ -50,6 +72,7 @@ services:
     restart: unless-stopped
 
 volumes:
+  mongo_data:
   backend_data:
   backend_uploads:
   backend_media:
