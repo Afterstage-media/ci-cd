@@ -14,13 +14,14 @@ spec:
     spec:
       securityContext:
         runAsNonRoot: true
-        allowPrivilegeEscalation: false
-        capabilities: {drop: [ALL]}
         seccompProfile: {type: RuntimeDefault}
       containers:
         - name: cloudflared
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
           image: cloudflare/cloudflared:2025.9.1
-          args: [tunnel, --no-autoupdate, --url, http://website:80]
+          args: [tunnel, --no-autoupdate, --protocol, http2, --url, http://website:80]
           resources:
             requests: {cpu: 10m, memory: 32Mi}
             limits: {cpu: 100m, memory: 128Mi}
