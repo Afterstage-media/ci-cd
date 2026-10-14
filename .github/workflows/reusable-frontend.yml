@@ -19,4 +19,5 @@ jobs:
       - run: npm ci
       - run: npm run format:check
       - run: npm run build
+      - run: npm run test:smoke
       - run: npm audit --omit=dev --audit-level=moderate
