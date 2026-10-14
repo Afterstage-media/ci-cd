@@ -36,4 +36,5 @@ metadata:
   namespace: medio-under
 spec:
   selector: {app: website}
+  type: LoadBalancer
   ports: [{name: http, port: 80, targetPort: http}]
