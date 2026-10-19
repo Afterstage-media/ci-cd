@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# The Afterstage k3d cluster on underkode is isolated from Orux's native k3s.
+namespace: afterstage
+
+resources:
+  - ../k3s
+  - cloudflared.yaml
+
+patches:
+  - target:
+      group: ""
+      version: v1
+      kind: Namespace
+      name: medio-under
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: afterstage
+
+images:
+  - name: backend
+    newName: ghcr.io/medio-under/backend
+    newTag: latest
+  - name: frontend
+    newName: ghcr.io/medio-under/frontend
+    newTag: latest
