@@ -10,9 +10,11 @@ data:
   UPLOAD_DIR: /app/uploads
   MEDIA_ROOT: /app/media
   MONGODB_DB: medio_under
-  PUBLIC_BASE_URL: https://medio-under.example.com
-  PUBLIC_MEDIA_BASE_URL: https://medio-under.example.com
-  CLOUDFLARE_TUNNEL_URL: https://medio-under.example.com
+  PUBLIC_BASE_URL: https://afterstage.ar
+  PUBLIC_MEDIA_BASE_URL: https://afterstage.ar
+  CLOUDFLARE_TUNNEL_URL: https://afterstage.ar
+  CORS_ORIGINS: https://afterstage.ar
+  PUBLIC_INCLUDE_DEMO_DATA: "false"
   META_API_VERSION: v24.0
   SCHEDULER_INTERVAL_MS: "30000"
   RATE_LIMIT: "120"
