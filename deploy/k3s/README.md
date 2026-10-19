@@ -39,6 +39,33 @@ kubectl -n medio-under logs -f deployment/cloudflared-quick
 
 La URL temporal cambia al reiniciar. Para Meta y publicaciones reales usar un túnel nombrado con hostname estable y configurar ese hostname en `PUBLIC_BASE_URL` y `CLOUDFLARE_TUNNEL_URL` del ConfigMap.
 
+## Dominio de producción: afterstage.ar
+
+> Este directorio describe el cluster k3s nativo de Orux. El sitio de
+> `afterstage.ar` debe desplegarse en el cluster k3d aislado de `underkode`,
+> usando `deploy/afterstage` y `~/.kube/afterstage.yaml`. No aplicar este
+> overlay con el contexto por defecto de `kubectl`.
+
+El proyecto queda preparado para publicar en `https://afterstage.ar`. El dominio todavía figura pendiente de pago en NIC Argentina, por lo que los pasos externos se completan cuando la registración quede activa:
+
+1. En Cloudflare, agregar `afterstage.ar` como zona y conservar los nameservers que indique Cloudflare.
+2. En el túnel nombrado asociado al token de `medio-under-secrets`, crear una ruta pública:
+   - Hostname: `afterstage.ar`
+   - Service: `http://website:80`
+3. Opcionalmente agregar `www.afterstage.ar` con redirección al dominio raíz.
+4. Aplicar el overlay de producción y verificar el rollout:
+
+   ```bash
+   kubectl apply -k deploy/k3s/overlays/production
+   kubectl -n medio-under rollout status deployment/website
+   kubectl -n medio-under rollout status deployment/backend
+   kubectl -n medio-under logs deployment/cloudflared --tail=100
+   ```
+
+5. Comprobar `https://afterstage.ar/health` y luego regenerar sitemap/robots desde el backend para que usen el dominio público.
+
+No se incluye ningún token o credencial en el repositorio. El `CLOUDFLARE_TUNNEL_TOKEN` debe continuar en el Secret `medio-under-secrets`.
+
 ## Actualizar
 
 Construir/importar las imágenes nuevas y ejecutar:
