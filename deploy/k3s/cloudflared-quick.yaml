@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cloudflared-quick
-  namespace: medio-under
+  namespace: afterstage
   labels: {app: cloudflared-quick}
 spec:
   replicas: 1

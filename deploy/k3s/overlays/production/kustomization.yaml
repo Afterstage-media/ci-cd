@@ -1,13 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: medio-under
+namespace: afterstage
 resources:
   - ../../
   - ../../cloudflared-named.yaml
 images:
   - name: backend
-    newName: ghcr.io/medio-under/backend
+    newName: ghcr.io/afterstage/backend
     newTag: main-0 # {"$imagepolicy": "flux-system:backend"}
   - name: frontend
-    newName: ghcr.io/medio-under/frontend
+    newName: ghcr.io/afterstage/frontend
     newTag: main-0 # {"$imagepolicy": "flux-system:frontend"}

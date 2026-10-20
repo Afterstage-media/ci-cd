@@ -1,4 +1,4 @@
-# Medio Under en `underkode`
+# afterstage en `underkode`
 
 Este overlay está destinado exclusivamente al cluster k3d `afterstage` de la
 miniPC `underkode`. No debe aplicarse con el contexto del cluster nativo de
@@ -12,8 +12,8 @@ Desde `underkode`:
 export KUBECONFIG="$HOME/.kube/afterstage.yaml"
 kubectl get nodes
 kubectl get namespace afterstage
-kubectl -n afterstage get secret medio-under-secrets medio-under-x509
-kubectl -n afterstage get secret medio-under-secrets -o jsonpath='{.data.MONGODB_URI}'
+kubectl -n afterstage get secret afterstage-secrets afterstage-x509
+kubectl -n afterstage get secret afterstage-secrets -o jsonpath='{.data.MONGODB_URI}'
 ```
 
 Los dos Secrets son obligatorios y deben crearse fuera de Git. `MONGODB_URI`,
@@ -36,7 +36,7 @@ kubectl -n afterstage get pod,svc,endpoints
 
 El túnel nombrado debe tener la ruta `afterstage.ar -> http://website:80` en
 Cloudflare. La configuración del túnel no se guarda en Git; el token continúa
-en el Secret `medio-under-secrets`.
+en el Secret `afterstage-secrets`.
 
 ## Verificación
 

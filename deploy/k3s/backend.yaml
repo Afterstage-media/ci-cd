@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
-  namespace: medio-under
+  namespace: afterstage
   labels: {app: backend}
 spec:
   replicas: 1
@@ -28,13 +28,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports: [{name: http, containerPort: 8787}]
           envFrom:
-            - configMapRef: {name: medio-under-config}
-            - secretRef: {name: medio-under-secrets}
+            - configMapRef: {name: afterstage-config}
+            - secretRef: {name: afterstage-secrets}
           volumeMounts:
             - {name: data, mountPath: /app/data}
             - {name: media, mountPath: /app/uploads}
             - {name: media, mountPath: /app/media}
-            - {name: x509, mountPath: /etc/medio-under/x509.pem, subPath: x509.pem, readOnly: true}
+            - {name: x509, mountPath: /etc/afterstage/x509.pem, subPath: x509.pem, readOnly: true}
           readinessProbe:
             httpGet: {path: /ready, port: http}
             initialDelaySeconds: 5
@@ -47,15 +47,15 @@ spec:
             requests: {cpu: 100m, memory: 192Mi}
             limits: {cpu: 1000m, memory: 768Mi}
       volumes:
-        - {name: data, persistentVolumeClaim: {claimName: medio-under-data}}
-        - {name: media, persistentVolumeClaim: {claimName: medio-under-media}}
-        - {name: x509, secret: {secretName: medio-under-x509, optional: false}}
+        - {name: data, persistentVolumeClaim: {claimName: afterstage-data}}
+        - {name: media, persistentVolumeClaim: {claimName: afterstage-media}}
+        - {name: x509, secret: {secretName: afterstage-x509, optional: false}}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: backend
-  namespace: medio-under
+  namespace: afterstage
 spec:
   selector: {app: backend}
   ports: [{name: http, port: 8787, targetPort: http}]

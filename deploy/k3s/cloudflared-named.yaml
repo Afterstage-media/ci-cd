@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cloudflared
-  namespace: medio-under
+  namespace: afterstage
   labels: {app: cloudflared}
 spec:
   replicas: 1
@@ -24,7 +24,7 @@ spec:
           env:
             - name: TUNNEL_TOKEN
               valueFrom:
-                secretKeyRef: {name: medio-under-secrets, key: CLOUDFLARE_TUNNEL_TOKEN}
+                secretKeyRef: {name: afterstage-secrets, key: CLOUDFLARE_TUNNEL_TOKEN}
           resources:
             requests: {cpu: 10m, memory: 32Mi}
             limits: {cpu: 100m, memory: 128Mi}
