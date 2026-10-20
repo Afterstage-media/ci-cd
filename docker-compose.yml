@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
 
   backend:
-    image: ghcr.io/medio-under/backend:latest
+    image: ghcr.io/afterstage/backend:latest
     build:
       context: ../backend
       dockerfile: Dockerfile
@@ -24,8 +24,8 @@ services:
       DATA_DIR: /app/data
       UPLOAD_DIR: /app/uploads
       MEDIA_ROOT: /app/media
-      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017/medio_under}
-      MONGODB_DB: ${MONGODB_DB:-medio_under}
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017/afterstage}
+      MONGODB_DB: ${MONGODB_DB:-afterstage}
       TRUST_PROXY: "true"
     depends_on:
       mongo:
@@ -45,7 +45,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    image: ghcr.io/medio-under/frontend:latest
+    image: ghcr.io/afterstage/frontend:latest
     build:
       context: ..
       dockerfile: ci-cd/infra/local-frontend.Dockerfile

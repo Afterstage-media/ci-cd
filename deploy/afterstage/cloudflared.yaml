@@ -28,7 +28,7 @@ spec:
             - name: TUNNEL_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: medio-under-secrets
+                  name: afterstage-secrets
                   key: CLOUDFLARE_TUNNEL_TOKEN
           securityContext:
             allowPrivilegeEscalation: false

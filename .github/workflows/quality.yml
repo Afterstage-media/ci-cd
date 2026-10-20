@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:
-          repository: medio-under/backend
+          repository: afterstage/backend
           path: backend
       - uses: actions/setup-node@v4
         with:
@@ -39,7 +39,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:
-          repository: medio-under/frontend
+          repository: afterstage/frontend
           path: frontend
       - uses: actions/setup-node@v4
         with:

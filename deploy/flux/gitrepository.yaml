@@ -1,11 +1,11 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: medio-under
+  name: afterstage
   namespace: flux-system
 spec:
   interval: 1m
-  url: https://github.com/medio-under/ci-cd.git
+  url: https://github.com/afterstage/ci-cd.git
   ref:
     branch: main
   timeout: 60s

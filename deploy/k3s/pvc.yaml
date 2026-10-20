@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: medio-under-data
-  namespace: medio-under
+  name: afterstage-data
+  namespace: afterstage
 spec:
   accessModes: [ReadWriteOnce]
   storageClassName: local-path
@@ -13,8 +13,8 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: medio-under-media
-  namespace: medio-under
+  name: afterstage-media
+  namespace: afterstage
 spec:
   accessModes: [ReadWriteOnce]
   storageClassName: local-path
