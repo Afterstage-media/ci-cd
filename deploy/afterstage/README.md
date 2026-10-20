@@ -17,10 +17,10 @@ kubectl -n afterstage get secret medio-under-secrets -o jsonpath='{.data.MONGODB
 ```
 
 Los dos Secrets son obligatorios y deben crearse fuera de Git. `MONGODB_URI`,
-`JWT_SECRET`, `AI_API_KEY` y el certificado `x509.pem` no deben sustituirse por
-valores de ejemplo. `AI_API_KEY` es el secreto del proveedor OpenAI-compatible
-que utiliza `crear_nota_con_ia`; el backend no lo expone por HTTP ni lo guarda
-en el código fuente.
+`JWT_SECRET` y el certificado `x509.pem` no deben sustituirse por valores de
+ejemplo. El agente genera el contenido y `crear_nota_con_ia` sólo guarda el
+borrador en Afterstage, por lo que no requiere una `AI_API_KEY`. Esa clave sólo
+es opcional si se habilitan herramientas internas de regeneración editorial.
 
 ## Aplicar
 
