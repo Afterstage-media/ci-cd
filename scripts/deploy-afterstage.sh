@@ -22,7 +22,7 @@ for secret in medio-under-secrets medio-under-x509; do
   fi
 done
 
-for key in MONGODB_URI JWT_SECRET AI_API_KEY; do
+for key in MONGODB_URI JWT_SECRET; do
   if [[ -z $("${kubectl_cmd[@]}" -n afterstage get secret medio-under-secrets -o "jsonpath={.data.${key}}") ]]; then
     echo "Missing required key ${key} in secret medio-under-secrets" >&2
     exit 1
