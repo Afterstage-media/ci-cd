@@ -22,6 +22,13 @@ for secret in medio-under-secrets medio-under-x509; do
   fi
 done
 
+for key in MONGODB_URI JWT_SECRET AI_API_KEY; do
+  if [[ -z $("${kubectl_cmd[@]}" -n afterstage get secret medio-under-secrets -o "jsonpath={.data.${key}}") ]]; then
+    echo "Missing required key ${key} in secret medio-under-secrets" >&2
+    exit 1
+  fi
+done
+
 "${kubectl_cmd[@]}" apply -k "$repo_root/deploy/afterstage"
 "${kubectl_cmd[@]}" -n afterstage rollout status deployment/backend --timeout=180s
 "${kubectl_cmd[@]}" -n afterstage rollout status deployment/website --timeout=180s
