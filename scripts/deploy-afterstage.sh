@@ -15,7 +15,7 @@ fi
 "${kubectl_cmd[@]}" get nodes
 "${kubectl_cmd[@]}" get namespace afterstage >/dev/null
 
-for secret in afterstage-secrets afterstage-x509; do
+for secret in medio-under-secrets medio-under-x509 afterstage-cloudflared; do
   if ! "${kubectl_cmd[@]}" -n afterstage get secret "$secret" >/dev/null 2>&1; then
     echo "Missing required secret in namespace afterstage: $secret" >&2
     exit 1
@@ -23,8 +23,8 @@ for secret in afterstage-secrets afterstage-x509; do
 done
 
 for key in MONGODB_URI JWT_SECRET; do
-  if [[ -z $("${kubectl_cmd[@]}" -n afterstage get secret afterstage-secrets -o "jsonpath={.data.${key}}") ]]; then
-    echo "Missing required key ${key} in secret afterstage-secrets" >&2
+  if [[ -z $("${kubectl_cmd[@]}" -n afterstage get secret medio-under-secrets -o "jsonpath={.data.${key}}") ]]; then
+    echo "Missing required key ${key} in secret medio-under-secrets" >&2
     exit 1
   fi
 done
