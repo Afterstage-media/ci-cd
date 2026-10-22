@@ -45,9 +45,9 @@ jobs:
           file: ${{ matrix.file }}
           push: true
           tags: |
-            ghcr.io/medio-under/${{ matrix.name }}:main-${{ github.run_number }}
-            ghcr.io/medio-under/${{ matrix.name }}:latest
-            ghcr.io/medio-under/${{ matrix.name }}:${{ github.ref_name }}
+            ghcr.io/afterstage-media/${{ matrix.name }}:main-${{ github.run_number }}
+            ghcr.io/afterstage-media/${{ matrix.name }}:latest
+            ghcr.io/afterstage-media/${{ matrix.name }}:${{ github.ref_name }}
           labels: |
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
