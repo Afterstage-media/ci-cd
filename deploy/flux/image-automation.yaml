@@ -4,7 +4,7 @@ metadata:
   name: backend
   namespace: flux-system
 spec:
-  image: ghcr.io/afterstage/backend
+  image: ghcr.io/afterstage-media/backend
   interval: 5m
   secretRef:
     name: ghcr-auth
@@ -29,7 +29,7 @@ metadata:
   name: frontend
   namespace: flux-system
 spec:
-  image: ghcr.io/afterstage/frontend
+  image: ghcr.io/afterstage-media/frontend
   interval: 5m
   secretRef:
     name: ghcr-auth
