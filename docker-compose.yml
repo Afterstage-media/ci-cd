@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
 
   backend:
-    image: ghcr.io/afterstage/backend:latest
+    image: ghcr.io/afterstage-media/backend:latest
     build:
       context: ../backend
       dockerfile: Dockerfile
@@ -45,7 +45,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    image: ghcr.io/afterstage/frontend:latest
+    image: ghcr.io/afterstage-media/frontend:latest
     build:
       context: ..
       dockerfile: ci-cd/infra/local-frontend.Dockerfile

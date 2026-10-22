@@ -22,8 +22,8 @@ patches:
 
 images:
   - name: backend
-    newName: ghcr.io/afterstage/backend
+    newName: ghcr.io/afterstage-media/backend
     newTag: latest
   - name: frontend
-    newName: ghcr.io/afterstage/frontend
+    newName: ghcr.io/afterstage-media/frontend
     newTag: latest

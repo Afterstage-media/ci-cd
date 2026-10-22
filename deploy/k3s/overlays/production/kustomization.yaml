@@ -6,8 +6,8 @@ resources:
   - ../../cloudflared-named.yaml
 images:
   - name: backend
-    newName: ghcr.io/medio-under/backend
+    newName: ghcr.io/afterstage-media/backend
     newTag: main-105 # {"$imagepolicy": "flux-system:backend"}
   - name: frontend
-    newName: ghcr.io/medio-under/frontend
+    newName: ghcr.io/afterstage-media/frontend
     newTag: main-99 # {"$imagepolicy": "flux-system:frontend"}
