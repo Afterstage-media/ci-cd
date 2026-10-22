@@ -29,8 +29,20 @@ patches:
         path: /spec/template/spec/containers/0/envFrom/1/secretRef/name
         value: medio-under-secrets
       - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Always
+      - op: replace
         path: /spec/template/spec/volumes/2/secret/secretName
         value: medio-under-x509
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: website
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Always
   - target:
       group: apps
       version: v1
