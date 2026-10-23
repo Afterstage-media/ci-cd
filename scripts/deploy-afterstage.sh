@@ -32,4 +32,9 @@ done
 "${kubectl_cmd[@]}" apply -k "$repo_root/deploy/afterstage"
 "${kubectl_cmd[@]}" -n afterstage rollout status deployment/backend --timeout=180s
 "${kubectl_cmd[@]}" -n afterstage rollout status deployment/website --timeout=180s
+
+# MongoDB Atlas is the only production database. The old local StatefulSet is
+# intentionally removed after the Atlas-backed backend is healthy. The PVC is
+# left untouched so it remains a recoverable snapshot until explicitly retired.
+"${kubectl_cmd[@]}" -n afterstage delete service/mongodb statefulset/mongodb --ignore-not-found --wait=true
 "${kubectl_cmd[@]}" -n afterstage get pod,svc,endpoints
