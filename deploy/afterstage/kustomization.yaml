@@ -7,7 +7,6 @@ namespace: afterstage
 resources:
   - ../k3s
   - cloudflared.yaml
-  - mongodb.yaml
 
 patches:
   - target:
@@ -19,6 +18,15 @@ patches:
       - op: replace
         path: /metadata/name
         value: afterstage
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: afterstage-config
+    patch: |-
+      - op: replace
+        path: /data/MONGODB_DB
+        value: medio_under
   - target:
       group: apps
       version: v1
