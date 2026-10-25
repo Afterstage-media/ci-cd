@@ -24,6 +24,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             capabilities: {drop: [ALL]}
+            readOnlyRootFilesystem: true
           image: backend:latest
           imagePullPolicy: IfNotPresent
           ports: [{name: http, containerPort: 8787}]
@@ -35,6 +36,7 @@ spec:
             - {name: media, mountPath: /app/uploads}
             - {name: media, mountPath: /app/media}
             - {name: x509, mountPath: /etc/afterstage/x509.pem, subPath: x509.pem, readOnly: true}
+            - {name: tmp, mountPath: /tmp}
           readinessProbe:
             httpGet: {path: /ready, port: http}
             initialDelaySeconds: 5
@@ -50,6 +52,7 @@ spec:
         - {name: data, persistentVolumeClaim: {claimName: afterstage-data}}
         - {name: media, persistentVolumeClaim: {claimName: afterstage-media}}
         - {name: x509, secret: {secretName: afterstage-x509, optional: false}}
+        - {name: tmp, emptyDir: {}}
 ---
 apiVersion: v1
 kind: Service
