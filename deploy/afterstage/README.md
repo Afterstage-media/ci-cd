@@ -30,8 +30,8 @@ kubectl get namespace afterstage
 ./scripts/deploy-afterstage.sh
 ```
 
-Los dos Secrets son obligatorios y deben crearse fuera de Git. `MONGODB_URI`,
-`JWT_SECRET` e `INBOUND_EMAIL_WEBHOOK_SECRET` no deben
+Los dos Secrets son obligatorios y se sincronizan desde el repositorio privado.
+`MONGODB_URI`, `JWT_SECRET` e `INBOUND_EMAIL_WEBHOOK_SECRET` no deben
 sustituirse por valores de ejemplo. Para habilitar respuestas desde `/admin/correo`
 también deben cargarse `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` y `SMTP_FROM` en
 `afterstage-secrets`. El agente genera el contenido y `crear_nota_con_ia` sólo
