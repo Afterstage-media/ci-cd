@@ -51,3 +51,5 @@ jobs:
           labels: |
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
+          build-args: |
+            VITE_R2_MEDIA_UPLOADS=${{ vars.VITE_R2_MEDIA_UPLOADS || 'false' }}

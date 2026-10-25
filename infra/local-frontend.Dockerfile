@@ -1,5 +1,7 @@
 FROM node:24-alpine AS build
 WORKDIR /app
+ARG VITE_R2_MEDIA_UPLOADS=false
+ENV VITE_R2_MEDIA_UPLOADS=$VITE_R2_MEDIA_UPLOADS
 COPY frontend/package*.json ./
 RUN npm ci --ignore-scripts
 COPY frontend ./
