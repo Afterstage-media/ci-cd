@@ -53,6 +53,8 @@ jobs:
           labels: |
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
+          build-args: |
+            VITE_R2_MEDIA_UPLOADS=${{ vars.VITE_R2_MEDIA_UPLOADS || 'false' }}
       - name: Generate image SBOM
         uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
         with:

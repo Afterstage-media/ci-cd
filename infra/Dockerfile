@@ -1,5 +1,7 @@
 FROM node:24-alpine@sha256:1200d815de24f8dcca745fbf7651d166034a35adbcad8860a8538ffff44f1420 AS build
 WORKDIR /app
+ARG VITE_R2_MEDIA_UPLOADS=false
+ENV VITE_R2_MEDIA_UPLOADS=$VITE_R2_MEDIA_UPLOADS
 COPY frontend/package*.json ./
 RUN npm ci --ignore-scripts
 COPY frontend ./

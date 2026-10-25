@@ -40,6 +40,13 @@ El túnel nombrado debe tener la ruta `afterstage.ar -> http://website:80` en
 Cloudflare. La configuración del túnel no se guarda en Git; el token continúa
 en el Secret `afterstage-cloudflared`.
 
+Para habilitar fotos R2, configurar en `afterstage-config` `MEDIA_GATEWAY_URL`
+y `MEDIA_PUBLIC_BASE_URL`, y en `medio-under-secrets`
+`MEDIA_GATEWAY_SERVICE_TOKEN`. El frontend debe construirse con
+`VITE_R2_MEDIA_UPLOADS=true`; mientras esté en `false` conserva el flujo local
+legado. El Worker y su bucket se administran en el repositorio separado
+`afterstage-storage-gateway`.
+
 ## Verificación
 
 ```bash
