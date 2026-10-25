@@ -24,7 +24,7 @@ spec:
           env:
             - name: TUNNEL_TOKEN
               valueFrom:
-                secretKeyRef: {name: afterstage-secrets, key: CLOUDFLARE_TUNNEL_TOKEN}
+                secretKeyRef: {name: afterstage-cloudflared, key: TUNNEL_TOKEN}
           resources:
             requests: {cpu: 10m, memory: 32Mi}
             limits: {cpu: 100m, memory: 128Mi}

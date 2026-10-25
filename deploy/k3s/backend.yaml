@@ -30,7 +30,49 @@ spec:
           ports: [{name: http, containerPort: 8787}]
           envFrom:
             - configMapRef: {name: afterstage-config}
-            - secretRef: {name: afterstage-secrets}
+          env:
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: JWT_SECRET}
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: MONGODB_URI}
+            - name: INBOUND_EMAIL_WEBHOOK_SECRET
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: INBOUND_EMAIL_WEBHOOK_SECRET, optional: true}
+            - name: AI_API_KEY
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: AI_API_KEY, optional: true}
+            - name: META_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: META_ACCESS_TOKEN, optional: true}
+            - name: META_INSTAGRAM_ACCOUNT_ID
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: META_INSTAGRAM_ACCOUNT_ID, optional: true}
+            - name: META_INSTAGRAM_APP_SECRET
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: META_INSTAGRAM_APP_SECRET, optional: true}
+            - name: META_TOKEN_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: META_TOKEN_ENCRYPTION_KEY, optional: true}
+            - name: META_PAGE_ID
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: META_PAGE_ID, optional: true}
+            - name: SMTP_HOST
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: SMTP_HOST, optional: true}
+            - name: SMTP_USER
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: SMTP_USER, optional: true}
+            - name: SMTP_PASS
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: SMTP_PASS, optional: true}
+            - name: SMTP_FROM
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: SMTP_FROM, optional: true}
+            - name: MEDIA_GATEWAY_SERVICE_TOKEN
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: MEDIA_GATEWAY_SERVICE_TOKEN, optional: true}
           volumeMounts:
             - {name: data, mountPath: /app/data}
             - {name: media, mountPath: /app/uploads}

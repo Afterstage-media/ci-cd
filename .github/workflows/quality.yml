@@ -8,6 +8,13 @@ permissions:
   contents: read
 
 jobs:
+  deployment-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate production ConfigMap and Secret contract
+        run: python3 scripts/validate-afterstage-contract.py
+
   backend:
     runs-on: ubuntu-latest
     defaults:
