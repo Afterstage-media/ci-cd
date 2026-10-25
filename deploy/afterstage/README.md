@@ -15,9 +15,9 @@ dos identidades. En `underkode` deben existir, con permisos `0600`:
 - `/home/fedemarkoo/.config/age/afterstage-prod-keys.txt`: las dos identidades
   age requeridas para descifrar producción.
 
-El despliegue sincroniza ese repositorio, descifra en memoria y aplica sólo
-`afterstage-secrets` y `afterstage-cloudflared` al namespace `afterstage`. No
-se guardan valores descifrados en el checkout de la aplicación ni en Git.
+Flux sincroniza ese repositorio, descifra durante la reconciliación y aplica
+sólo `afterstage-secrets` y `afterstage-cloudflared` al namespace `afterstage`.
+No se guardan valores descifrados en el checkout de la aplicación ni en Git.
 
 ## Preflight
 
@@ -27,7 +27,7 @@ Desde `underkode`:
 export KUBECONFIG="$HOME/.kube/afterstage.yaml"
 kubectl get nodes
 kubectl get namespace afterstage
-./scripts/deploy-afterstage.sh
+./scripts/bootstrap-afterstage-flux.sh
 ```
 
 Los dos Secrets son obligatorios y se sincronizan desde el repositorio privado.

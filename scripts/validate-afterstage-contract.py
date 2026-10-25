@@ -11,6 +11,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CONFIGMAP = ROOT / "deploy/k3s/configmap.yaml"
 PRODUCTION_OVERLAY = ROOT / "deploy/afterstage/kustomization.yaml"
+FLUX_BOOTSTRAP = ROOT / "deploy/flux/bootstrap.yaml"
+FLUX_RESOURCES = ROOT / "deploy/flux/kustomization.yaml"
+FLUX_KUSTOMIZATIONS = ROOT / "deploy/flux/afterstage-kustomizations.yaml"
 BACKEND = ROOT / "deploy/k3s/backend.yaml"
 SECRET = ROOT / "deploy/k3s/secret.example.yaml"
 CLOUDFLARED_SECRET = ROOT / "deploy/k3s/cloudflared-secret.example.yaml"
@@ -78,6 +81,17 @@ def validate() -> None:
     require(PRODUCTION_OVERLAY, overlay_text, "path: /data/MONGODB_DB")
     require(PRODUCTION_OVERLAY, overlay_text, "value: medio_under")
 
+    flux_bootstrap_text = FLUX_BOOTSTRAP.read_text(encoding="utf-8")
+    require(FLUX_BOOTSTRAP, flux_bootstrap_text, "url: https://github.com/Afterstage-media/ci-cd.git")
+    require(FLUX_BOOTSTRAP, flux_bootstrap_text, "name: afterstage-flux")
+    flux_resources_text = FLUX_RESOURCES.read_text(encoding="utf-8")
+    require(FLUX_RESOURCES, flux_resources_text, "afterstage-sources.yaml")
+    require(FLUX_RESOURCES, flux_resources_text, "afterstage-kustomizations.yaml")
+    flux_kustomizations_text = FLUX_KUSTOMIZATIONS.read_text(encoding="utf-8")
+    require(FLUX_KUSTOMIZATIONS, flux_kustomizations_text, "provider: sops")
+    require(FLUX_KUSTOMIZATIONS, flux_kustomizations_text, "name: afterstage-sops-age")
+    require(FLUX_KUSTOMIZATIONS, flux_kustomizations_text, "name: afterstage-secrets")
+
     secret_text = SECRET.read_text(encoding="utf-8")
     require(SECRET, secret_text, "name: afterstage-secrets")
     secret = mapping(SECRET, "stringData:")
@@ -107,6 +121,9 @@ def validate() -> None:
             fail(f"{BACKEND}: falta referencia explícita a {key}")
     if "CLOUDFLARE_TUNNEL_TOKEN" in backend_text:
         fail(f"{BACKEND}: el backend no debe recibir el token del túnel")
+    for path in (BACKEND, ROOT / "deploy/afterstage/cloudflared.yaml"):
+        text = path.read_text(encoding="utf-8")
+        require(path, text, "reloader.stakater.com")
 
     print("OK: contrato de configuración y secretos de producción validado")
 

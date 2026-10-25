@@ -1,0 +1,14 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: afterstage-secrets
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://github.com/Afterstage-media/afterstage-secrets.git
+  ref:
+    branch: main
+  provider: generic
+  secretRef:
+    name: afterstage-secrets-github
+  timeout: 60s

@@ -13,6 +13,9 @@ spec:
   template:
     metadata:
       labels: {app: backend}
+      annotations:
+        configmap.reloader.stakater.com/reload: afterstage-config
+        secret.reloader.stakater.com/reload: afterstage-secrets
     spec:
       securityContext:
         runAsNonRoot: true
