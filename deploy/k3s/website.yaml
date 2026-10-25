@@ -12,6 +12,8 @@ spec:
     metadata:
       labels: {app: website}
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull
       containers:
         - name: website
           image: frontend:latest
