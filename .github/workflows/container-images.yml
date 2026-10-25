@@ -66,6 +66,7 @@ jobs:
         with:
           image: ghcr.io/afterstage-media/${{ matrix.name }}:main-${{ github.run_number }}
           severity-cutoff: high
+          only-fixed: true
           fail-build: true
           output-format: sarif
           output-file: scan-${{ matrix.name }}-${{ github.run_number }}.sarif
