@@ -14,7 +14,6 @@ PRODUCTION_OVERLAY = ROOT / "deploy/afterstage/kustomization.yaml"
 BACKEND = ROOT / "deploy/k3s/backend.yaml"
 SECRET = ROOT / "deploy/k3s/secret.example.yaml"
 CLOUDFLARED_SECRET = ROOT / "deploy/k3s/cloudflared-secret.example.yaml"
-X509_SECRET = ROOT / "deploy/k3s/x509-secret.example.yaml"
 
 PLACEHOLDER = re.compile(
     r"(REEMPLAZAR|REPLACE|EXAMPLE|EJEMPLO|CHANGE[-_ ]?ME|CLUSTER\.EXAMPLE|USUARIO|PASSWORD|TOKEN_DEL_TUNEL)",
@@ -87,10 +86,7 @@ def validate() -> None:
             fail(f"{SECRET}: falta la clave requerida {key}")
     if "CLOUDFLARE_TUNNEL_TOKEN" in secret:
         fail(f"{SECRET}: el token de Cloudflare debe estar separado")
-    for path, name, key in (
-        (CLOUDFLARED_SECRET, "afterstage-cloudflared", "TUNNEL_TOKEN"),
-        (X509_SECRET, "afterstage-x509", "x509.pem"),
-    ):
+    for path, name, key in ((CLOUDFLARED_SECRET, "afterstage-cloudflared", "TUNNEL_TOKEN"),):
         text = path.read_text(encoding="utf-8")
         require(path, text, f"name: {name}")
         values = mapping(path, "stringData:")
@@ -98,7 +94,7 @@ def validate() -> None:
             fail(f"{path}: falta la clave {key}")
         if not PLACEHOLDER.search(values[key]):
             fail(f"{path}: el ejemplo no puede contener un valor real")
-    for path, values in ((SECRET, secret), (CLOUDFLARED_SECRET, mapping(CLOUDFLARED_SECRET, "stringData:")), (X509_SECRET, mapping(X509_SECRET, "stringData:"))):
+    for path, values in ((SECRET, secret), (CLOUDFLARED_SECRET, mapping(CLOUDFLARED_SECRET, "stringData:"))):
         for key, value in values.items():
             if value and not PLACEHOLDER.search(value):
                 fail(f"{path}: el ejemplo contiene un valor no-placeholder en {key}")

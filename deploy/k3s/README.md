@@ -16,13 +16,15 @@ docker save backend:latest frontend:latest | sudo k3s ctr images import -
 ## Instalar producción
 
 ```bash
-# Crear fuera de Git: afterstage-secrets, afterstage-x509 y afterstage-cloudflared.
+# Crear fuera de Git: afterstage-secrets y afterstage-cloudflared.
 ./scripts/deploy-afterstage.sh
 ```
 
-Los archivos `secret.example.yaml`, `x509-secret.example.yaml` y
-`cloudflared-secret.example.yaml` sólo documentan nombres y claves; nunca se
-aplican directamente ni contienen valores reales.
+Los archivos `secret.example.yaml` y `cloudflared-secret.example.yaml` sólo
+documentan nombres y claves; nunca se aplican directamente ni contienen valores
+reales. El script sincroniza los secretos cifrados desde el repositorio privado
+`Afterstage-media/afterstage-secrets` usando un token de lectura fuera de Git y
+los aplica en memoria.
 
 El sitio queda dentro del cluster en `http://website.afterstage.svc.cluster.local`. Para usar el túnel nombrado:
 

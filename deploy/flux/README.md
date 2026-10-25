@@ -15,7 +15,7 @@ kubectl -n flux-system create secret docker-registry ghcr-auth \
   --docker-password=TOKEN_READ_PACKAGES
 ```
 
-4. Crear `afterstage-secrets`, `afterstage-x509` y `afterstage-cloudflared` en
+4. Crear `afterstage-secrets` y `afterstage-cloudflared` en
    el namespace de la aplicación con valores reales usando SOPS, Sealed Secrets
    o el gestor de secretos del cluster. No aplicar ni commitear valores reales
    de los archivos `*.example.yaml`.
