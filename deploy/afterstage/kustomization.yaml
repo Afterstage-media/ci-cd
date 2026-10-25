@@ -36,9 +36,6 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/imagePullPolicy
         value: Always
-      - op: replace
-        path: /spec/template/spec/volumes/2/secret/secretName
-        value: afterstage-x509
   - target:
       group: apps
       version: v1
