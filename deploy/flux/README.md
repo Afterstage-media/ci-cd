@@ -1,11 +1,15 @@
-# GitOps con Flux para k3s
+# GitOps con Flux para Afterstage
 
-Flux obtiene el estado deseado directamente desde GitHub y reconcilia el overlay de producción. Las imágenes se construyen en GitHub Actions, se publican en GHCR y Flux Image Automation actualiza los tags en el repositorio.
+Flux obtiene el estado deseado desde GitHub y reconcilia producción en el
+cluster `k3d-afterstage` de `underkode`. El repositorio público de aplicación y
+el repositorio privado de secretos se sincronizan por separado.
 
 ## Requisitos
 
-1. Instalar Flux en el cluster k3s (`flux bootstrap github ...`) o instalar sus controllers equivalentes.
-2. El repositorio debe ser accesible por Flux. Para un repositorio privado, crear el Secret `flux-system`/deploy key durante el bootstrap.
+1. Instalar Flux ejecutando `scripts/bootstrap-afterstage-flux.sh` en
+   `underkode` con el contexto `~/.kube/afterstage.yaml`.
+2. El bootstrap crea en `flux-system` la credencial GitHub para el repositorio
+   privado y `afterstage-sops-age` con las dos identidades age de producción.
 3. Crear `ghcr-auth` en `flux-system` con un PAT de solo lectura para los paquetes:
 
 ```bash
@@ -15,34 +19,33 @@ kubectl -n flux-system create secret docker-registry ghcr-auth \
   --docker-password=TOKEN_READ_PACKAGES
 ```
 
-4. Crear `afterstage-secrets` y `afterstage-cloudflared` en
-   el namespace de la aplicación con valores reales usando SOPS, Sealed Secrets
-   o el gestor de secretos del cluster. No aplicar ni commitear valores reales
-   de los archivos `*.example.yaml`.
+4. No crear manualmente los Secrets de la aplicación: la Kustomization
+   `afterstage-secrets` descifra SOPS/age y los aplica desde
+   `Afterstage-media/afterstage-secrets`.
 
-## Instalar Flux resources
+## Recursos reconciliados
 
 ```bash
-kubectl apply -f deploy/flux/gitrepository.yaml
-kubectl apply -f deploy/flux/kustomization.yaml
-kubectl apply -f deploy/flux/image-automation.yaml
+kubectl -n flux-system get gitrepositories
+kubectl -n flux-system get kustomizations
+flux reconcile kustomization afterstage --namespace=flux-system --with-source
 flux get sources git
 flux get kustomizations
-flux get images all -A
 ```
 
-El branch configurado es `main`. Para desplegar otra rama, cambiar `spec.ref.branch` en `gitrepository.yaml` y el checkout/push de `image-automation.yaml`. La automatización de imágenes hace commits en `main`; proteger el branch permitiendo el bot de Flux.
+El branch de producción es `main`. `afterstage-secrets` usa SOPS con dos
+identidades age y Flux descifra sólo durante la reconciliación. El chart
+Reloader reinicia backend y túneles cuando cambia un ConfigMap o Secret, porque
+Kubernetes no reinicia automáticamente los pods que consumen variables de
+entorno.
 
 ## Flujo
 
 ```text
-push a main → GitHub Actions → GHCR main-N
-                              ↓
-                 Flux ImagePolicy detecta N
-                              ↓
-                 ImageUpdateAutomation commitea tag
-                              ↓
-                 GitRepository/Kustomization despliega k3s
+push a main → GitRepository afterstage → Kustomization afterstage
+push secretos → GitRepository afterstage-secrets → SOPS/age → Secrets
+                                                               ↓
+                                      Reloader → rollout de workloads
 ```
 
 El túnel nombrado se mantiene dentro del overlay de producción y apunta al Service `website`. La URL pública y el token siguen siendo secretos/configuración del cluster, no parte del repositorio.
@@ -52,9 +55,10 @@ El túnel nombrado se mantiene dentro del overlay de producción y apunta al Ser
 El workflow `.github/workflows/release.yml` contiene el flujo de release versionado
 del medio. En cada push a `main` calcula la próxima versión a partir de
 Conventional Commits, crea un tag anotado e inmutable `vX.Y.Z` y publica la
-release de GitHub. Las imágenes también se publican con ese tag,
-además de `main-N` y `latest`; Flux continúa siguiendo `main-N` para despliegue
-continuo y las releases quedan disponibles para rollback reproducible.
+release de GitHub. Las imágenes continúan publicándose mediante GitHub Actions.
+El despliegue de Afterstage sigue el manifiesto versionado en
+`deploy/afterstage`; no depende de un commit automático de Flux para cambiar
+tags.
 
 Los commits que disparan versiones deben usar `feat:`, `fix:`, `perf:` o indicar
 un cambio incompatible. El workflow de `commit-policy` valida esta convención en
