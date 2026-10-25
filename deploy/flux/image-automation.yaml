@@ -4,7 +4,7 @@ metadata:
   name: backend
   namespace: flux-system
 spec:
-  image: ghcr.io/medio-under/backend
+  image: ghcr.io/afterstage-media/backend
   interval: 5m
   secretRef:
     name: ghcr-auth
@@ -29,7 +29,7 @@ metadata:
   name: frontend
   namespace: flux-system
 spec:
-  image: ghcr.io/medio-under/frontend
+  image: ghcr.io/afterstage-media/frontend
   interval: 5m
   secretRef:
     name: ghcr-auth
@@ -51,13 +51,13 @@ spec:
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageUpdateAutomation
 metadata:
-  name: medio-under
+  name: afterstage
   namespace: flux-system
 spec:
   interval: 5m
   sourceRef:
     kind: GitRepository
-    name: medio-under
+    name: afterstage
   git:
     checkout:
       ref: {branch: main}
@@ -65,7 +65,7 @@ spec:
       branch: main
     commit:
       author: {name: fluxcdbot, email: fluxcdbot@users.noreply.github.com}
-      messageTemplate: "chore(images): update Medio Under images"
+      messageTemplate: "chore(images): update afterstage images"
   update:
     path: ./deploy/k3s/overlays/production
     strategy: Setters

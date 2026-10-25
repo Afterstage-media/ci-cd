@@ -11,6 +11,8 @@ on:
 permissions:
   contents: read
   packages: write
+  actions: write
+  security-events: write
 
 jobs:
   images:
@@ -28,11 +30,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:
-          repository: medio-under/frontend
+          repository: ${{ github.repository_owner }}/frontend
           path: frontend
       - uses: actions/checkout@v4
         with:
-          repository: medio-under/backend
+          repository: ${{ github.repository_owner }}/backend
           path: backend
       - uses: docker/login-action@v3
         with:
@@ -43,13 +45,41 @@ jobs:
         with:
           context: ${{ matrix.context }}
           file: ${{ matrix.file }}
-          push: true
+          load: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/${{ matrix.name }}:main-${{ github.run_number }}
-            ghcr.io/${{ github.repository_owner }}/${{ matrix.name }}:latest
-            ghcr.io/${{ github.repository_owner }}/${{ matrix.name }}:${{ github.ref_name }}
+            ghcr.io/afterstage-media/${{ matrix.name }}:main-${{ github.run_number }}
+            ghcr.io/afterstage-media/${{ matrix.name }}:latest
+            ghcr.io/afterstage-media/${{ matrix.name }}:${{ github.ref_name }}
           labels: |
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
           build-args: |
             VITE_R2_MEDIA_UPLOADS=${{ vars.VITE_R2_MEDIA_UPLOADS || 'false' }}
+      - name: Generate image SBOM
+        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
+        with:
+          image: ghcr.io/afterstage-media/${{ matrix.name }}:main-${{ github.run_number }}
+          format: spdx-json
+          output-file: sbom-${{ matrix.name }}-${{ github.run_number }}.spdx.json
+          artifact-name: sbom-${{ matrix.name }}-${{ github.run_number }}.spdx.json
+          upload-release-assets: false
+      - name: Scan image for high and critical vulnerabilities
+        uses: anchore/scan-action@a5605eb0943e46279cb4fbd9d44297355d3520ab # v7.0.2
+        with:
+          image: ghcr.io/afterstage-media/${{ matrix.name }}:main-${{ github.run_number }}
+          severity-cutoff: high
+          only-fixed: true
+          fail-build: true
+          output-format: sarif
+          output-file: scan-${{ matrix.name }}-${{ github.run_number }}.sarif
+      - name: Upload vulnerability scan
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: scan-${{ matrix.name }}-${{ github.run_number }}.sarif
+      - name: Publish image after security gates
+        run: |
+          set -euo pipefail
+          image="ghcr.io/afterstage-media/${{ matrix.name }}"
+          docker push "${image}:main-${{ github.run_number }}"
+          docker push "${image}:latest"
+          docker push "${image}:${{ github.ref_name }}"

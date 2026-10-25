@@ -1,4 +1,4 @@
-# Medio Under en k3s
+# afterstage en k3s
 
 El despliegue usa el `local-path` de k3s para datos y medios, MongoDB Atlas para persistencia principal y Cloudflare Tunnel para exposición pública. El túnel apunta al servicio `website`, que enruta API, panel, notas, RSS y `/media` hacia el gestor.
 
@@ -19,22 +19,22 @@ docker save backend:latest frontend:latest | sudo k3s ctr images import -
 kubectl apply -f deploy/k3s/secret.example.yaml
 # Editar el Secret antes de continuar: no commitear credenciales reales.
 kubectl apply -k deploy/k3s
-kubectl -n medio-under rollout status deployment/backend
-kubectl -n medio-under rollout status deployment/website
+kubectl -n afterstage rollout status deployment/backend
+kubectl -n afterstage rollout status deployment/website
 ```
 
-El sitio queda dentro del cluster en `http://website.medio-under.svc.cluster.local`. Para usar el túnel nombrado:
+El sitio queda dentro del cluster en `http://website.afterstage.svc.cluster.local`. Para usar el túnel nombrado:
 
 ```bash
 kubectl apply -f deploy/k3s/cloudflared-named.yaml
-kubectl -n medio-under logs -f deployment/cloudflared
+kubectl -n afterstage logs -f deployment/cloudflared
 ```
 
 Para una URL temporal de prueba:
 
 ```bash
 kubectl apply -f deploy/k3s/cloudflared-quick.yaml
-kubectl -n medio-under logs -f deployment/cloudflared-quick
+kubectl -n afterstage logs -f deployment/cloudflared-quick
 ```
 
 La URL temporal cambia al reiniciar. Para Meta y publicaciones reales usar un túnel nombrado con hostname estable y configurar ese hostname en `PUBLIC_BASE_URL` y `CLOUDFLARE_TUNNEL_URL` del ConfigMap.
@@ -49,7 +49,7 @@ La URL temporal cambia al reiniciar. Para Meta y publicaciones reales usar un t�
 El proyecto queda preparado para publicar en `https://afterstage.ar`. El dominio todavía figura pendiente de pago en NIC Argentina, por lo que los pasos externos se completan cuando la registración quede activa:
 
 1. En Cloudflare, agregar `afterstage.ar` como zona y conservar los nameservers que indique Cloudflare.
-2. En el túnel nombrado asociado al token de `medio-under-secrets`, crear una ruta pública:
+2. En el túnel nombrado asociado al token de `afterstage-secrets`, crear una ruta pública:
    - Hostname: `afterstage.ar`
    - Service: `http://website:80`
 3. Opcionalmente agregar `www.afterstage.ar` con redirección al dominio raíz.
@@ -57,22 +57,22 @@ El proyecto queda preparado para publicar en `https://afterstage.ar`. El dominio
 
    ```bash
    kubectl apply -k deploy/k3s/overlays/production
-   kubectl -n medio-under rollout status deployment/website
-   kubectl -n medio-under rollout status deployment/backend
-   kubectl -n medio-under logs deployment/cloudflared --tail=100
+   kubectl -n afterstage rollout status deployment/website
+   kubectl -n afterstage rollout status deployment/backend
+   kubectl -n afterstage logs deployment/cloudflared --tail=100
    ```
 
 5. Comprobar `https://afterstage.ar/health` y luego regenerar sitemap/robots desde el backend para que usen el dominio público.
 
-No se incluye ningún token o credencial en el repositorio. El `CLOUDFLARE_TUNNEL_TOKEN` debe continuar en el Secret `medio-under-secrets`.
+No se incluye ningún token o credencial en el repositorio. El `CLOUDFLARE_TUNNEL_TOKEN` debe continuar en el Secret `afterstage-secrets`.
 
 ## Actualizar
 
 Construir/importar las imágenes nuevas y ejecutar:
 
 ```bash
-kubectl -n medio-under rollout restart deployment/backend deployment/website
-kubectl -n medio-under get pods,svc,pvc
+kubectl -n afterstage rollout restart deployment/backend deployment/website
+kubectl -n afterstage get pods,svc,pvc
 ```
 
 Los PVC no se eliminan al actualizar deployments. MongoDB Atlas debe tener Network Access y el usuario configurados para el nodo/egress del cluster.

@@ -7,23 +7,67 @@ namespace: afterstage
 resources:
   - ../k3s
   - cloudflared.yaml
-  - mongodb.yaml
 
 patches:
   - target:
       group: ""
       version: v1
       kind: Namespace
-      name: medio-under
+      name: afterstage
     patch: |-
       - op: replace
         path: /metadata/name
         value: afterstage
+  - target:
+      group: ""
+      version: v1
+      kind: ConfigMap
+      name: afterstage-config
+    patch: |-
+      - op: replace
+        path: /data/MONGODB_DB
+        value: medio_under
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: backend
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/envFrom/1/secretRef/name
+        value: medio-under-secrets
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Always
+      - op: replace
+        path: /spec/template/spec/volumes/2/secret/secretName
+        value: medio-under-x509
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: website
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Always
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: cloudflared
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/name
+        value: afterstage-cloudflared
+      - op: replace
+        path: /spec/template/spec/containers/0/env/0/valueFrom/secretKeyRef/key
+        value: TUNNEL_TOKEN
 
 images:
   - name: backend
-    newName: ghcr.io/medio-under/backend
+    newName: ghcr.io/afterstage-media/backend
     newTag: latest
   - name: frontend
-    newName: ghcr.io/medio-under/frontend
+    newName: ghcr.io/afterstage-media/frontend
     newTag: latest

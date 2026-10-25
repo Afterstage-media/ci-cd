@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
 
   backend:
-    image: ghcr.io/medio-under/backend:latest
+    image: ghcr.io/afterstage-media/backend:latest
     build:
       context: ../backend
       dockerfile: Dockerfile
@@ -24,10 +24,11 @@ services:
       DATA_DIR: /app/data
       UPLOAD_DIR: /app/uploads
       MEDIA_ROOT: /app/media
-      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017/medio_under}
-      MONGODB_DB: ${MONGODB_DB:-medio_under}
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017/afterstage}
+      MONGODB_DB: ${MONGODB_DB:-afterstage}
       MEDIA_GATEWAY_URL: ${MEDIA_GATEWAY_URL:-}
       MEDIA_PUBLIC_BASE_URL: ${MEDIA_PUBLIC_BASE_URL:-}
+      MEDIA_GATEWAY_SERVICE_TOKEN: ${MEDIA_GATEWAY_SERVICE_TOKEN:-}
       MEDIA_MAX_OBJECT_BYTES: ${MEDIA_MAX_OBJECT_BYTES:-5242880}
       MEDIA_MAX_TOTAL_BYTES: ${MEDIA_MAX_TOTAL_BYTES:-26843545600}
       MEDIA_MAX_MONTHLY_UPLOAD_BYTES: ${MEDIA_MAX_MONTHLY_UPLOAD_BYTES:-2147483648}
@@ -53,7 +54,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    image: ghcr.io/medio-under/frontend:latest
+    image: ghcr.io/afterstage-media/frontend:latest
     build:
       context: ..
       dockerfile: ci-cd/infra/local-frontend.Dockerfile

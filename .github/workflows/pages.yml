@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:
-          repository: medio-under/frontend
+          repository: ${{ github.repository_owner }}/frontend
           path: frontend
       - uses: actions/setup-node@v4
         with:

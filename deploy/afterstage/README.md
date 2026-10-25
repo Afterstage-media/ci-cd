@@ -1,4 +1,4 @@
-# Medio Under en `underkode`
+# afterstage en `underkode`
 
 Este overlay está destinado exclusivamente al cluster k3d `afterstage` de la
 miniPC `underkode`. No debe aplicarse con el contexto del cluster nativo de
@@ -12,13 +12,17 @@ Desde `underkode`:
 export KUBECONFIG="$HOME/.kube/afterstage.yaml"
 kubectl get nodes
 kubectl get namespace afterstage
-kubectl -n afterstage get secret medio-under-secrets medio-under-x509
+kubectl -n afterstage get secret medio-under-secrets medio-under-x509 afterstage-cloudflared
 kubectl -n afterstage get secret medio-under-secrets -o jsonpath='{.data.MONGODB_URI}'
 ```
 
 Los dos Secrets son obligatorios y deben crearse fuera de Git. `MONGODB_URI`,
-`JWT_SECRET` y el certificado `x509.pem` no deben sustituirse por valores de
-ejemplo.
+`JWT_SECRET`, `INBOUND_EMAIL_WEBHOOK_SECRET` y el certificado `x509.pem` no deben
+sustituirse por valores de ejemplo. Para habilitar respuestas desde `/admin/correo`
+también deben cargarse `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` y `SMTP_FROM` en
+`medio-under-secrets`. El agente genera el contenido y `crear_nota_con_ia` sólo
+guarda el borrador en Afterstage, por lo que no requiere una `AI_API_KEY`. Esa
+clave sólo es opcional si se habilitan herramientas internas de regeneración editorial.
 
 ## Aplicar
 
@@ -34,7 +38,7 @@ kubectl -n afterstage get pod,svc,endpoints
 
 El túnel nombrado debe tener la ruta `afterstage.ar -> http://website:80` en
 Cloudflare. La configuración del túnel no se guarda en Git; el token continúa
-en el Secret `medio-under-secrets`.
+en el Secret `afterstage-cloudflared`.
 
 Para habilitar fotos R2, configurar en `afterstage-config` `MEDIA_GATEWAY_URL`
 y `MEDIA_PUBLIC_BASE_URL`, y en `medio-under-secrets`
