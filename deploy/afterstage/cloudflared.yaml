@@ -28,8 +28,8 @@ spec:
             - name: TUNNEL_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: afterstage-secrets
-                  key: CLOUDFLARE_TUNNEL_TOKEN
+                  name: afterstage-cloudflared
+                  key: TUNNEL_TOKEN
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:

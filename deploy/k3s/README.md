@@ -13,15 +13,16 @@ docker build -t frontend:latest -f infra/Dockerfile ..
 docker save backend:latest frontend:latest | sudo k3s ctr images import -
 ```
 
-## Instalar
+## Instalar producción
 
 ```bash
-kubectl apply -f deploy/k3s/secret.example.yaml
-# Editar el Secret antes de continuar: no commitear credenciales reales.
-kubectl apply -k deploy/k3s
-kubectl -n afterstage rollout status deployment/backend
-kubectl -n afterstage rollout status deployment/website
+# Crear fuera de Git: afterstage-secrets, afterstage-x509 y afterstage-cloudflared.
+./scripts/deploy-afterstage.sh
 ```
+
+Los archivos `secret.example.yaml`, `x509-secret.example.yaml` y
+`cloudflared-secret.example.yaml` sólo documentan nombres y claves; nunca se
+aplican directamente ni contienen valores reales.
 
 El sitio queda dentro del cluster en `http://website.afterstage.svc.cluster.local`. Para usar el túnel nombrado:
 
@@ -49,7 +50,7 @@ La URL temporal cambia al reiniciar. Para Meta y publicaciones reales usar un t�
 El proyecto queda preparado para publicar en `https://afterstage.ar`. El dominio todavía figura pendiente de pago en NIC Argentina, por lo que los pasos externos se completan cuando la registración quede activa:
 
 1. En Cloudflare, agregar `afterstage.ar` como zona y conservar los nameservers que indique Cloudflare.
-2. En el túnel nombrado asociado al token de `afterstage-secrets`, crear una ruta pública:
+2. En el túnel nombrado asociado al token de `afterstage-cloudflared`, crear una ruta pública:
    - Hostname: `afterstage.ar`
    - Service: `http://website:80`
 3. Opcionalmente agregar `www.afterstage.ar` con redirección al dominio raíz.
@@ -64,7 +65,9 @@ El proyecto queda preparado para publicar en `https://afterstage.ar`. El dominio
 
 5. Comprobar `https://afterstage.ar/health` y luego regenerar sitemap/robots desde el backend para que usen el dominio público.
 
-No se incluye ningún token o credencial en el repositorio. El `CLOUDFLARE_TUNNEL_TOKEN` debe continuar en el Secret `afterstage-secrets`.
+No se incluye ningún token o credencial en el repositorio. El token debe
+continuar en el Secret `afterstage-cloudflared` y el backend no recibe ese
+secreto.
 
 ## Actualizar
 

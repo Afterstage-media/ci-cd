@@ -25,9 +25,13 @@ data:
   CORS_ORIGINS: https://afterstage.ar
   PUBLIC_INCLUDE_DEMO_DATA: "false"
   META_API_VERSION: v24.0
+  META_INSTAGRAM_APP_ID: "1422226186554406"
+  META_INSTAGRAM_REDIRECT_URI: https://afterstage.ar/api/integrations/instagram/callback
   SCHEDULER_INTERVAL_MS: "30000"
   RATE_LIMIT: "120"
   TRUST_PROXY: "true"
+  SMTP_PORT: "587"
+  SMTP_SECURE: "false"
   PRESS_AUTO_FOLLOWUP: "false"
   MCP_ALLOW_LIVE_PUBLISH: "false"
   MCP_ALLOW_LIVE_EMAIL: "false"
