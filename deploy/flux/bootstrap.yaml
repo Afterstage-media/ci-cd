@@ -19,7 +19,10 @@ spec:
   interval: 1m
   retryInterval: 30s
   timeout: 3m
-  wait: true
+  # The root reconciles Flux resources, including the application Kustomization.
+  # It must not block on application health or it cannot propagate a recovery
+  # when a workload is temporarily unhealthy.
+  wait: false
   prune: true
   sourceRef:
     kind: GitRepository
