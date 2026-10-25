@@ -17,10 +17,12 @@ kubectl -n afterstage get secret medio-under-secrets -o jsonpath='{.data.MONGODB
 ```
 
 Los dos Secrets son obligatorios y deben crearse fuera de Git. `MONGODB_URI`,
-`JWT_SECRET` y el certificado `x509.pem` no deben sustituirse por valores de
-ejemplo. El agente genera el contenido y `crear_nota_con_ia` sólo guarda el
-borrador en Afterstage, por lo que no requiere una `AI_API_KEY`. Esa clave sólo
-es opcional si se habilitan herramientas internas de regeneración editorial.
+`JWT_SECRET`, `INBOUND_EMAIL_WEBHOOK_SECRET` y el certificado `x509.pem` no deben
+sustituirse por valores de ejemplo. Para habilitar respuestas desde `/admin/correo`
+también deben cargarse `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` y `SMTP_FROM` en
+`medio-under-secrets`. El agente genera el contenido y `crear_nota_con_ia` sólo
+guarda el borrador en Afterstage, por lo que no requiere una `AI_API_KEY`. Esa
+clave sólo es opcional si se habilitan herramientas internas de regeneración editorial.
 
 ## Aplicar
 
