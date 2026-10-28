@@ -20,7 +20,8 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             capabilities: {drop: [ALL]}
-          image: cloudflare/cloudflared:2025.9.1
+          image: cloudflare/cloudflared:latest
+          imagePullPolicy: Always
           args: [tunnel, --no-autoupdate, --protocol, http2, --url, http://website:80]
           resources:
             requests: {cpu: 10m, memory: 32Mi}

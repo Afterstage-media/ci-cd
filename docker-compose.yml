@@ -66,7 +66,8 @@ services:
     restart: unless-stopped
 
   cloudflared-quick:
-    image: cloudflare/cloudflared:2025.9.1
+    image: cloudflare/cloudflared:latest
+    pull_policy: always
     profiles: ["quick-tunnel"]
     depends_on:
       frontend:
@@ -75,7 +76,8 @@ services:
     restart: unless-stopped
 
   cloudflared-named:
-    image: cloudflare/cloudflared:2025.9.1
+    image: cloudflare/cloudflared:latest
+    pull_policy: always
     profiles: ["named-tunnel"]
     command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN:-}
     restart: unless-stopped
