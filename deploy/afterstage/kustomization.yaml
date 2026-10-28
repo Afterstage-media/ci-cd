@@ -51,4 +51,4 @@ images:
     newTag: main-290
   - name: frontend
     newName: ghcr.io/afterstage-media/frontend
-    newTag: main-292
+    newTag: main-293
