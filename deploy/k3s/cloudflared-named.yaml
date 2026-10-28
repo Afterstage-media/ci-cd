@@ -19,7 +19,8 @@ spec:
         seccompProfile: {type: RuntimeDefault}
       containers:
         - name: cloudflared
-          image: cloudflare/cloudflared:2025.9.1
+          image: cloudflare/cloudflared:latest
+          imagePullPolicy: Always
           args: [tunnel, --no-autoupdate, run, --token, "$(TUNNEL_TOKEN)"]
           env:
             - name: TUNNEL_TOKEN

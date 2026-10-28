@@ -23,8 +23,8 @@ spec:
           type: RuntimeDefault
       containers:
         - name: cloudflared
-          image: cloudflare/cloudflared:2026.10.0
-          imagePullPolicy: IfNotPresent
+          image: cloudflare/cloudflared:latest
+          imagePullPolicy: Always
           args: [tunnel, --no-autoupdate, --protocol, http2, run, --token, "$(TUNNEL_TOKEN)"]
           env:
             - name: TUNNEL_TOKEN
