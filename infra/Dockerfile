@@ -7,6 +7,6 @@ RUN npm ci --ignore-scripts
 COPY frontend ./
 RUN npm run build
 
-FROM nginx:alpine-slim@sha256:f9238a4aacf18df0f059cf0389490fc2e876352f75d019f475a48e8765576f24
+FROM nginx:alpine-slim@sha256:9c68ad4f28e7dee4b9484a7859bf451da39ef661bcd038ef62e87593fcd91c86
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY infra/nginx.conf /etc/nginx/conf.d/default.conf
