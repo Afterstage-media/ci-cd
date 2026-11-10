@@ -66,7 +66,7 @@ def validate() -> None:
         "PUBLIC_BASE_URL": "https://afterstage.ar",
         "CORS_ORIGINS": "https://afterstage.ar",
         "PUBLIC_INCLUDE_DEMO_DATA": "false",
-        "META_INSTAGRAM_APP_ID": "1422226186554406",
+        "META_INSTAGRAM_APP_ID": "1682503186884890",
         "META_INSTAGRAM_REDIRECT_URI": "https://afterstage.ar/api/integrations/instagram/callback",
     }
     for key, expected in expected_config.items():
