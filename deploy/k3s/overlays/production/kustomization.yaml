@@ -7,7 +7,7 @@ resources:
 images:
   - name: backend
     newName: ghcr.io/afterstage-media/backend
-    newTag: main-403 # {"$imagepolicy": "flux-system:backend"}
+    newTag: main-406 # {"$imagepolicy": "flux-system:backend"}
   - name: frontend
     newName: ghcr.io/afterstage-media/frontend
-    newTag: main-403 # {"$imagepolicy": "flux-system:frontend"}
+    newTag: main-406 # {"$imagepolicy": "flux-system:frontend"}
