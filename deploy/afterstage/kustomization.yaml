@@ -48,7 +48,7 @@ patches:
 images:
   - name: backend
     newName: ghcr.io/afterstage-media/backend
-    newTag: main-406
+    newTag: main-418
   - name: frontend
     newName: ghcr.io/afterstage-media/frontend
-    newTag: main-415
+    newTag: main-418
