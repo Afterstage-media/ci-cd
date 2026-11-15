@@ -37,6 +37,10 @@ también deben cargarse `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` y `SMTP_FROM` en
 `afterstage-secrets`. El agente genera el contenido y `crear_nota_con_ia` sólo
 guarda el borrador en Afterstage, por lo que no requiere una `AI_API_KEY`. Esa
 clave sólo es opcional si se habilitan herramientas internas de regeneración editorial.
+El módulo de novedades usa `GEMINI_API_KEY`, que debe agregarse al repositorio
+privado `Afterstage-media/afterstage-secrets` para habilitar análisis y copy con
+Gemini. Sin la clave, el scrapeo y la consulta de resultados siguen disponibles,
+pero la generación informa que falta la configuración.
 
 El token del túnel vive únicamente en `afterstage-cloudflared`. La conexión a
 MongoDB usa `MONGODB_URI` contra Atlas/cloud; no se despliega MongoDB local ni

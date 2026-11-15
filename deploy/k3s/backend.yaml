@@ -48,6 +48,11 @@ spec:
             - name: AI_API_KEY
               valueFrom:
                 secretKeyRef: {name: afterstage-secrets, key: AI_API_KEY, optional: true}
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef: {name: afterstage-secrets, key: GEMINI_API_KEY, optional: true}
+            - name: GEMINI_MODEL
+              value: gemini-3.8-flash
             - name: META_ACCESS_TOKEN
               valueFrom:
                 secretKeyRef: {name: afterstage-secrets, key: META_ACCESS_TOKEN, optional: true}
