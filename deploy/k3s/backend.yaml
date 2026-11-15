@@ -52,7 +52,7 @@ spec:
               valueFrom:
                 secretKeyRef: {name: afterstage-secrets, key: GEMINI_API_KEY, optional: true}
             - name: GEMINI_MODEL
-              value: gemini-3.8-flash
+              value: gemini-3.1-flash-lite
             - name: META_ACCESS_TOKEN
               valueFrom:
                 secretKeyRef: {name: afterstage-secrets, key: META_ACCESS_TOKEN, optional: true}
