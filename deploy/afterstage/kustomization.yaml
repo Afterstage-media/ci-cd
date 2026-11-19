@@ -14,7 +14,7 @@ patches:
       group: ""
       version: v1
       kind: Namespace
-      name: medio-under
+      name: afterstage
     patch: |-
       - op: replace
         path: /metadata/name
@@ -22,8 +22,8 @@ patches:
 
 images:
   - name: backend
-    newName: ghcr.io/medio-under/backend
+    newName: ghcr.io/afterstage/backend
     newTag: latest
   - name: frontend
-    newName: ghcr.io/medio-under/frontend
+    newName: ghcr.io/afterstage/frontend
     newTag: latest
